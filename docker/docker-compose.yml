@@ -1,16 +1,18 @@
-version: "2.4"
+version: "3.7"
 services:
   mongo-service:
     image: mongo
     container_name: mongo
-    mem_limit: 500m
     ports:
       - "27017:27017"
+    networks:
+      monitoring:
+        aliases:
+          - mongo-service
 
   admin-mongo-service:
     image: mrvautin/adminmongo
     container_name: adminmongo
-    mem_limit: 500m
     links: ['mongo-service:mongo']
     environment:
       CONN_NAME: 'localConnection'
@@ -18,11 +20,14 @@ services:
       HOST: 0.0.0.0
     ports:
       - "1234:1234"
+    networks:
+      monitoring:
+        aliases:
+          - admin-mongo-service
 
   customer-service:
     image: com.swapnilsankla/customer-service
     container_name: customer-service
-    mem_limit: 500m
     depends_on:
       - kafka
     ports:
@@ -30,17 +35,24 @@ services:
     environment:
       - MONGO_URL=mongodb://mongo:27017/customers
       - KAFKA_URL=kafka:9092
+    networks:
+      monitoring:
+        aliases:
+          - customer-service
 
   loan-gateway-service:
     image: com.swapnilsankla/loan-gateway
     container_name: loan-gateway
-    mem_limit: 500m
     depends_on:
       - kafka
     ports:
       - "8082:8082"
     environment:
       - KAFKA_URL=kafka:9092
+    networks:
+      monitoring:
+        aliases:
+          - loan-gateway-service
 
   kafka:
     image: spotify/kafka
@@ -48,19 +60,19 @@ services:
     ports:
       - "2181:2181"
       - "9092:9092"
+      - "7071:7071"
     expose:
       - 2181
       - 9092
+      - 7071
     environment:
       - ADVERTISED_HOST:localhost
       - ADVERTISED_PORT:9092
       - KAFKA_ADVERTISED_HOST_NAME:kafka
-
-  kafka_exporter:
-    image: danielqsj/kafka-exporter
-    expose:
-      - 9308
-    command: --kafka.server=kafka:9092
+    networks:
+      monitoring:
+        aliases:
+          - kafka
 
   prometheus:
     image: prom/prometheus
@@ -68,10 +80,31 @@ services:
       - 9090:9090/tcp
     links:
       - kafka
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus:/prometheus
+    networks:
+      monitoring:
+        aliases:
+          - prometheus
+    depends_on:
+      - customer-service
 
   grafana:
     image: grafana/grafana
     ports:
       - "3000:3000"
+    volumes:
+      - ./grafana:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      monitoring:
+        aliases:
+          - grafana
+    depends_on:
+      - customer-service
 
-
+networks:
+  monitoring:
