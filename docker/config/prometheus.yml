@@ -15,8 +15,3 @@ scrape_configs:
     metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: ['customer-service:8081']
-
-  - job_name: 'kafka'
-    scrape_interval: 5s
-    static_configs:
-      - targets: ['kafka:7071']
