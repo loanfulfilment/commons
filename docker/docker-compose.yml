@@ -25,15 +25,28 @@ services:
         aliases:
           - admin-mongo-service
 
+  business-configuration-service:
+    image: com.swapnilsankla/business-configuration
+    container_name: business-configuration
+    depends_on:
+      - mongo-service
+    environment:
+      - MONGO_DB_HOST=mongo
+    networks:
+      monitoring:
+        aliases:
+          - business-configuration-service
+
   customer-service:
     image: com.swapnilsankla/customer-service
     container_name: customer-service
     depends_on:
       - kafka
+      - business-configuration-service
     ports:
       - "8081:8081"
     environment:
-      - MONGO_URL=mongodb://mongo:27017/customers
+      - MONGO_URL=mongodb://mongo:27017/customer-service
       - KAFKA_URL=kafka:9092
     networks:
       monitoring:
@@ -54,6 +67,22 @@ services:
         aliases:
           - loan-gateway-service
 
+  loan-offer-service:
+    image: com.swapnilsankla/loan-offer-service
+    container_name: loan-offer-service
+    depends_on:
+      - kafka
+      - business-configuration-service
+    ports:
+      - "8083:8083"
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/loan-offer-service
+      - KAFKA_URL=kafka:9092
+    networks:
+      monitoring:
+        aliases:
+          - loan-offer-service
+
   kafka:
     image: spotify/kafka
     container_name: kafka
@@ -69,6 +98,7 @@ services:
       - ADVERTISED_HOST:localhost
       - ADVERTISED_PORT:9092
       - KAFKA_ADVERTISED_HOST_NAME:kafka
+      - KAFKA_CREATE_TOPICS:"needLoanEvent:1:1,loanOfferDataAvailableForLoanProcessing:1:1,customerDataAvailableForLoanProcessing:1:1"
     networks:
       monitoring:
         aliases:
