@@ -83,6 +83,22 @@ services:
         aliases:
           - loan-offer-service
 
+  :
+    image: com.swapnilsankla/screening-service
+    container_name: screening-service
+    depends_on:
+      - kafka
+      - business-configuration-service
+    ports:
+      - "8084:8084"
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/screening-service
+      - KAFKA_URL=kafka:9092
+    networks:
+      monitoring:
+        aliases:
+          - screening-service
+
   kafka:
     image: spotify/kafka
     container_name: kafka
@@ -98,7 +114,7 @@ services:
       - ADVERTISED_HOST:localhost
       - ADVERTISED_PORT:9092
       - KAFKA_ADVERTISED_HOST_NAME:kafka
-      - KAFKA_CREATE_TOPICS:"needLoanEvent:1:1,loanOfferDataAvailableForLoanProcessing:1:1,customerDataAvailableForLoanProcessing:1:1"
+      - KAFKA_CREATE_TOPICS:"needLoanEvent:1:1,loanOfferDataAvailableForLoanProcessing:1:1,customerDataAvailableForLoanProcessing:1:1,screeningDataAvailableForLoanProcessing:1:1"
     networks:
       monitoring:
         aliases:
