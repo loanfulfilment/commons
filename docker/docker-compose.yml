@@ -83,7 +83,7 @@ services:
         aliases:
           - loan-offer-service
 
-  :
+  screening-service:
     image: com.swapnilsankla/screening-service
     container_name: screening-service
     depends_on:
