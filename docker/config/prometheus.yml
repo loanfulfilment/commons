@@ -27,3 +27,9 @@ scrape_configs:
     metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: ['loan-offer-service:8083']
+
+  - job_name: 'screening-service'
+    scrape_interval: 5s
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['screening:8084']
