@@ -2,7 +2,7 @@
 
 ## Loan fulfilment architecture
 
-![alt text](https://github.com/loanfulfilment/commons/blob/master/docs/LoanFulfilment.jpg)
+![alt text](https://github.com/loanfulfilment/commons/blob/master/docs/LoanFulfilment.png)
 
 ## Sample metrics
 
