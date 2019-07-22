@@ -33,3 +33,9 @@ scrape_configs:
     metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: ['screening-service:8084']
+
+  - job_name: 'loan-fulfilment-service'
+    scrape_interval: 5s
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['loan-fulfilment-service:8085']

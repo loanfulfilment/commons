@@ -99,6 +99,21 @@ services:
         aliases:
           - screening-service
 
+  loan-fulfilment-service:
+    image: com.swapnilsankla/loan-fulfilment-service
+    container_name: loan-fulfilment-service
+    depends_on:
+      - kafka
+      - mongo-service
+    ports:
+      - "8085:8085"
+    environment:
+      - KAFKA_URL=kafka:9092
+    networks:
+      monitoring:
+        aliases:
+          - loan-fulfilment-service
+
   kafka:
     image: spotify/kafka
     container_name: kafka
