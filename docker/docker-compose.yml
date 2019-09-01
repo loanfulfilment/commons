@@ -58,10 +58,13 @@ services:
     container_name: loan-gateway
     depends_on:
       - kafka
+      - tracing
     ports:
       - "8082:8082"
     environment:
       - KAFKA_URL=kafka:9092
+      - TRACER_HOST=tracing
+      - TRACER_PORT=6831
     networks:
       monitoring:
         aliases:
@@ -166,6 +169,17 @@ services:
           - grafana
     depends_on:
       - customer-service
+
+  tracing:
+    image: jaegertracing/all-in-one
+    ports:
+      - "16686:16686"
+      - "6831:6831/udp"
+      - "5775:5775/udp"
+    networks:
+      monitoring:
+        aliases:
+          - tracing
 
 networks:
   monitoring:
