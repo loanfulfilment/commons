@@ -43,11 +43,14 @@ services:
     depends_on:
       - kafka
       - business-configuration-service
+      - tracing
     ports:
       - "8081:8081"
     environment:
       - MONGO_URL=mongodb://mongo:27017/customer-service
       - KAFKA_URL=kafka:9092
+      - TRACER_HOST=tracing
+      - TRACER_PORT=6831
     networks:
       monitoring:
         aliases:
@@ -76,11 +79,14 @@ services:
     depends_on:
       - kafka
       - business-configuration-service
+      - tracing
     ports:
       - "8083:8083"
     environment:
       - MONGO_URL=mongodb://mongo:27017/loan-offer-service
       - KAFKA_URL=kafka:9092
+      - TRACER_HOST=tracing
+      - TRACER_PORT=6831
     networks:
       monitoring:
         aliases:
@@ -92,11 +98,14 @@ services:
     depends_on:
       - kafka
       - business-configuration-service
+      - tracing
     ports:
       - "8084:8084"
     environment:
       - MONGO_URL=mongodb://mongo:27017/screening-service
       - KAFKA_URL=kafka:9092
+      - TRACER_HOST=tracing
+      - TRACER_PORT=6831
     networks:
       monitoring:
         aliases:
@@ -108,10 +117,13 @@ services:
     depends_on:
       - kafka
       - mongo-service
+      - tracing
     ports:
       - "8085:8085"
     environment:
       - KAFKA_URL=kafka:9092
+      - TRACER_HOST=tracing
+      - TRACER_PORT=6831
     networks:
       monitoring:
         aliases:
