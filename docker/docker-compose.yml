@@ -39,6 +39,11 @@ services:
       - KAFKA_URL=kafka:9092
       - TRACER_HOST=tracing
       - TRACER_PORT=6831
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: accesslog
 
   loan-gateway-service:
     image: com.swapnilsankla/loan-gateway
@@ -52,6 +57,11 @@ services:
       - KAFKA_URL=kafka:9092
       - TRACER_HOST=tracing
       - TRACER_PORT=6831
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: accesslog
 
   loan-offer-service:
     image: com.swapnilsankla/loan-offer-service
@@ -67,6 +77,11 @@ services:
       - KAFKA_URL=kafka:9092
       - TRACER_HOST=tracing
       - TRACER_PORT=6831
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: accesslog
 
   screening-service:
     image: com.swapnilsankla/screening-service
@@ -82,6 +97,11 @@ services:
       - KAFKA_URL=kafka:9092
       - TRACER_HOST=tracing
       - TRACER_PORT=6831
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: accesslog
 
   loan-fulfilment-service:
     image: com.swapnilsankla/loan-fulfilment-service
@@ -96,6 +116,11 @@ services:
       - KAFKA_URL=kafka:9092
       - TRACER_HOST=tracing
       - TRACER_PORT=6831
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: accesslog
 
   kafka:
     image: confluentinc/cp-kafka:latest
@@ -163,8 +188,8 @@ services:
     links:
       - "elasticsearch"
     ports:
-      - "24224:24224"
-      - "24224:24224/udp"
+      - 24224:24224
+      - 24224:24224/udp
     depends_on:
       - elasticsearch
 
@@ -174,7 +199,7 @@ services:
     expose:
       - 9200
     ports:
-      - "9200:9200"
+      - 9200:9200
     environment:
       - node.name=es01
       - cluster.initial_master_nodes=es01
@@ -187,4 +212,4 @@ services:
     links:
       - "elasticsearch"
     ports:
-      - "5601:5601"
+      - 5601:5601
