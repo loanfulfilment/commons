@@ -67,10 +67,6 @@ services:
       - KAFKA_URL=kafka:9092
       - TRACER_HOST=tracing
       - TRACER_PORT=6831
-    networks:
-      monitoring:
-        aliases:
-          - loan-offer-service
 
   screening-service:
     image: com.swapnilsankla/screening-service
