@@ -4,11 +4,7 @@ services:
     image: mongo
     container_name: mongo
     ports:
-      - "27017:27017"
-    networks:
-      monitoring:
-        aliases:
-          - mongo-service
+      - 27017:27017
 
   admin-mongo-service:
     image: mrvautin/adminmongo
@@ -19,11 +15,7 @@ services:
       DB_HOST: 'mongo'
       HOST: 0.0.0.0
     ports:
-      - "1234:1234"
-    networks:
-      monitoring:
-        aliases:
-          - admin-mongo-service
+      - 1234:1234
 
   business-configuration-service:
     image: com.swapnilsankla/business-configuration
@@ -32,10 +24,6 @@ services:
       - mongo-service
     environment:
       - MONGO_DB_HOST=mongo
-    networks:
-      monitoring:
-        aliases:
-          - business-configuration-service
 
   customer-service:
     image: com.swapnilsankla/customer-service
@@ -45,16 +33,12 @@ services:
       - business-configuration-service
       - tracing
     ports:
-      - "8081:8081"
+      - 8081:8081
     environment:
       - MONGO_URL=mongodb://mongo:27017/customer-service
       - KAFKA_URL=kafka:9092
       - TRACER_HOST=tracing
       - TRACER_PORT=6831
-    networks:
-      monitoring:
-        aliases:
-          - customer-service
 
   loan-gateway-service:
     image: com.swapnilsankla/loan-gateway
@@ -63,15 +47,11 @@ services:
       - kafka
       - tracing
     ports:
-      - "8082:8082"
+      - 8082:8082
     environment:
       - KAFKA_URL=kafka:9092
       - TRACER_HOST=tracing
       - TRACER_PORT=6831
-    networks:
-      monitoring:
-        aliases:
-          - loan-gateway-service
 
   loan-offer-service:
     image: com.swapnilsankla/loan-offer-service
@@ -81,7 +61,7 @@ services:
       - business-configuration-service
       - tracing
     ports:
-      - "8083:8083"
+      - 8083:8083
     environment:
       - MONGO_URL=mongodb://mongo:27017/loan-offer-service
       - KAFKA_URL=kafka:9092
@@ -100,16 +80,12 @@ services:
       - business-configuration-service
       - tracing
     ports:
-      - "8084:8084"
+      - 8084:8084
     environment:
       - MONGO_URL=mongodb://mongo:27017/screening-service
       - KAFKA_URL=kafka:9092
       - TRACER_HOST=tracing
       - TRACER_PORT=6831
-    networks:
-      monitoring:
-        aliases:
-          - screening-service
 
   loan-fulfilment-service:
     image: com.swapnilsankla/loan-fulfilment-service
@@ -119,15 +95,11 @@ services:
       - mongo-service
       - tracing
     ports:
-      - "8085:8085"
+      - 8085:8085
     environment:
       - KAFKA_URL=kafka:9092
       - TRACER_HOST=tracing
       - TRACER_PORT=6831
-    networks:
-      monitoring:
-        aliases:
-          - loan-fulfilment-service
 
   kafka:
     image: spotify/kafka
@@ -159,39 +131,27 @@ services:
     volumes:
       - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./prometheus:/prometheus
-    networks:
-      monitoring:
-        aliases:
-          - prometheus
     depends_on:
       - customer-service
 
   grafana:
     image: grafana/grafana
     ports:
-      - "3000:3000"
+      - 3000:3000
     volumes:
       - ./grafana:/var/lib/grafana
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
-    networks:
-      monitoring:
-        aliases:
-          - grafana
     depends_on:
       - customer-service
 
   tracing:
     image: jaegertracing/all-in-one
     ports:
-      - "16686:16686"
-      - "6831:6831/udp"
-      - "5775:5775/udp"
-    networks:
-      monitoring:
-        aliases:
-          - tracing
+      - 16686:16686
+      - 6831:6831/udp
+      - 5775:5775/udp
 
 networks:
   monitoring:
