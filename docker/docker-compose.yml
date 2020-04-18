@@ -102,25 +102,31 @@ services:
       - TRACER_PORT=6831
 
   kafka:
-    image: spotify/kafka
+    image: confluentinc/cp-kafka:latest
     container_name: kafka
+    depends_on:
+      - zookeeper
     ports:
-      - "2181:2181"
-      - "9092:9092"
-      - "7071:7071"
-    expose:
-      - 2181
-      - 9092
-      - 7071
+      - 9092:9092
+      - 9093:9093
+      - 29092:29092
     environment:
-      - ADVERTISED_HOST:localhost
-      - ADVERTISED_PORT:9092
-      - KAFKA_ADVERTISED_HOST_NAME:kafka
-      - KAFKA_CREATE_TOPICS:"needLoanEvent:1:1,loanOfferDataAvailableForLoanProcessing:1:1,customerDataAvailableForLoanProcessing:1:1,screeningDataAvailableForLoanProcessing:1:1"
-    networks:
-      monitoring:
-        aliases:
-          - kafka
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CREATE_TOPICS: needLoanEvent:1:1,loanOfferDataAvailableForLoanProcessing:1:1,customerDataAvailableForLoanProcessing:1:1,screeningDataAvailableForLoanProcessing:1:1
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - 2181:2181
 
   prometheus:
     image: prom/prometheus
