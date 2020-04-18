@@ -1,3 +1,5 @@
 .idea/
 docker/grafana/*
 docker/prometheus/*
+docker/elasticsearch
+docker/.gradle
