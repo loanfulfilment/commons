@@ -28,6 +28,7 @@ Intent of this organization is to try out microservices with below technologies.
 - [ ] DB migrations
 - [ ] Istio
 - [ ] Common base module across all microservices
+- [ ] Rabbit MQ
 
 ## Loan fulfilment architecture
 
