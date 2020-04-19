@@ -16,17 +16,17 @@ Intent of this organization is to try out microservices with below technologies.
 - [ ] K8s
 - [ ] Helm
 - [ ] Nginx
-- [ ] Kafka rest
-- [ ] Istio
-- [ ] DB migrations
 - [ ] End to end encryption
 - [ ] Log masking
 - [ ] Gatling
+- [ ] Kafka rest
 - [ ] Schema registry
 - [ ] Web socket
 - [ ] Securing communication between services
 - [ ] AWS
 - [ ] Transactional DB
+- [ ] DB migrations
+- [ ] Istio
 
 ## Loan fulfilment architecture
 
