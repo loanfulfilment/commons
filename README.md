@@ -1,6 +1,6 @@
 # commons
 
-# Intent
+## Intent
 Intent of this organization is to try out microservices with below technologies.
 
 - [x] Kafka
