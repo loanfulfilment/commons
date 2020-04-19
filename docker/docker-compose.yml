@@ -217,3 +217,9 @@ services:
       - "elasticsearch"
     ports:
       - 5601:5601
+
+  metabase:
+    image: metabase/metabase
+    container_name: metabase
+    ports: 
+      - 3001:3000
