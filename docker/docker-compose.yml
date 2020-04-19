@@ -151,6 +151,7 @@ services:
 
   prometheus:
     image: prom/prometheus
+    container_name: prometheus
     ports:
       - 9090:9090/tcp
     links:
@@ -163,6 +164,7 @@ services:
 
   grafana:
     image: grafana/grafana
+    container_name: grafana
     ports:
       - 3000:3000
     volumes:
@@ -175,6 +177,7 @@ services:
 
   tracing:
     image: jaegertracing/all-in-one
+    container_name: jaeger
     ports:
       - 16686:16686
       - 6831:6831/udp
