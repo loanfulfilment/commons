@@ -12,6 +12,7 @@ Intent of this organization is to try out microservices with below technologies.
 - [x] Grafana
 - [x] Metabase
 - [x] CircleCI
+- [x] Docker compose
 - [ ] K8s
 - [ ] Helm
 - [ ] Nginx
