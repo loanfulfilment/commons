@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: admin-mongo
+spec:
+  selector:
+    name: admin-mongo
+  ports:
+  - port: 1234
+    nodePort: 30001  
+  type: NodePort

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin-mongo
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1 # At max how many can be unavailable
+      maxSurge: 1 # By how many the number of pods can exceed than number of replicas configured
+  selector: 
+    matchLabels:
+      name: "admin-mongo" # Selector is a query to match the label and it should match to the pod's label
+  template:
+    metadata:
+      name: admin-mongo
+      labels:
+        name: "admin-mongo"
+    spec:
+      containers:
+      - image: mrvautin/adminmongo:latest
+        name: admin-mongo
+        imagePullPolicy: IfNotPresent    
+        env:
+        - name: DB_HOST
+          value: mongo
+        - name: HOST  
+          value: 0.0.0.0
+        - name: CONN_NAME
+          value: local 
