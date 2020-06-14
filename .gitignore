@@ -1,5 +1,5 @@
 .idea/
-docker-compose/grafana/*
-docker-compose/prometheus/*
-docker-compose/elasticsearch
-docker-compose/.gradle
+deployment/docker-compose/grafana/*
+deployment/docker-compose/prometheus/*
+deployment/docker-compose/elasticsearch
+deployment/docker-compose/.gradle
