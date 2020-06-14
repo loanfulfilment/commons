@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: screening-service
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1 # At max how many can be unavailable
+      maxSurge: 1 # By how many the number of pods can exceed than number of replicas configured
+  selector: 
+    matchLabels:
+      name: "screening-service" # Selector is a query to match the label and it should match to the pod's label
+  template:
+    metadata:
+      name: screening-service
+      labels:
+        name: "screening-service"
+    spec:
+      containers:
+      - image: com.swapnilsankla/screening-service:latest
+        name: screening-service
+        imagePullPolicy: IfNotPresent    
+        env:
+        - name: KAFKA_URL
+          value: cp-kafka:9092
+        - name: MONGO_URL
+          value: mongodb://mongo:27017/screening-service
+        - name: TRACER_HOST
+          value: jaeger-internal
+        - name: TRACER_PORT
+          value: "6831"          

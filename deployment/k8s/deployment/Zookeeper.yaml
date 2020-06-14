@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zookeeper
+  labels:
+    name: "zookeeper"
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector: 
+    matchLabels:
+      name: "zookeeper"
+  template:
+    metadata:
+      name: zookeeper
+      labels:
+        name: "zookeeper"
+    spec:
+      containers:
+      - image: confluentinc/cp-zookeeper:latest
+        name: zookeeper
+        imagePullPolicy: IfNotPresent    
+        env:
+        - name: "ZOOKEEPER_CLIENT_PORT"
+          value: "2181"

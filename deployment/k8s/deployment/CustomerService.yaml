@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: customer-service
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector: 
+    matchLabels:
+      name: "customer-service"
+  template:
+    metadata:
+      name: customer-service
+      labels:
+        name: "customer-service"
+    spec:
+      containers:
+      - image: com.swapnilsankla/customer-service:latest
+        name: customer-service
+        imagePullPolicy: IfNotPresent    
+        env:
+        - name: KAFKA_URL
+          value: cp-kafka:9092
+        - name: MONGO_URL
+          value: mongodb://mongo:27017/customer-service
+        - name: TRACER_HOST
+          value: jaeger-internal
+        - name: TRACER_PORT
+          value: "6831"

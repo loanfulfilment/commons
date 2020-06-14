@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mongo
+spec:
+  replicas: 1
+  serviceName: mongo
+  selector: 
+    matchLabels:
+      name: "mongo"
+  template:
+    metadata:
+      name: mongo
+      labels:
+        name: "mongo"
+    spec:
+      containers:
+      - image: mongo
+        name: mongo
+        imagePullPolicy: IfNotPresent    
