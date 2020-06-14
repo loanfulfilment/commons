@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jaeger-internal
+  labels:
+    name: "jaeger"
+spec:
+  selector:
+    name: "jaeger"
+  type: ClusterIP
+  ports:
+  - port: 6831
+    targetPort: 6831
+    protocol: UDP        
