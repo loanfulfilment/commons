@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: loan-gateway-ingress
+spec:
+  rules:
+  - host: "swapnilsankla.com" 
+    http:
+      paths:
+      - path: /loans/apply
+        pathType: Prefix
+        backend:
+          serviceName: loan-gateway
+          servicePort: 8082
