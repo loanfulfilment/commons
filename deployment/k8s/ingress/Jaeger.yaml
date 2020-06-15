@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: jaeger-ingress
+spec:
+  rules:
+  - host: "tracing.swapnilsankla.com" 
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          serviceName: jaeger
+          servicePort: 16686
