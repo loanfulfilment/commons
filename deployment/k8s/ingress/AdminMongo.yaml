@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: admin-mongo-ingress
+spec:
+  rules:
+  - host: "mongoclient.swapnilsankla.com" 
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          serviceName: admin-mongo
+          servicePort: 1234
